@@ -33,4 +33,7 @@ public interface WeatherMapper extends GlobalConstant {
      * @return 该城市的天气数据
      */
    Weather getHighestWeatherOfCity(String cityName);
+
+
+    boolean saveWeathers(List<Weather> weathers);
 }

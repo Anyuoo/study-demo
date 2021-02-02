@@ -4,6 +4,7 @@ import com.anyu.studydemo.mapper.WeatherMapper;
 import com.anyu.studydemo.model.entity.Weather;
 import com.anyu.studydemo.service.WeatherService;
 import com.anyu.studydemo.util.CommonUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @Service("weatherService")
 public class WeatherServiceImpl implements WeatherService {
-    private final static Logger loger = LoggerFactory.getLogger(WeatherServiceImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(WeatherServiceImpl.class);
 
     @Resource
     private WeatherMapper weatherMapper;
@@ -50,10 +51,11 @@ public class WeatherServiceImpl implements WeatherService {
      * @param backupFileName 备份文件名
      */
     @Override
+//    @SuppressWarnings("unchecked")
     public boolean recovery(String backupFileName) {
         final InputStream stream = this.getClass().getClassLoader().getResourceAsStream(backupFileName);
         if (stream == null) {
-            loger.info("未发现备份资源");
+            logger.info("未发现备份资源");
             return false;
         }
         final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
@@ -64,11 +66,10 @@ public class WeatherServiceImpl implements WeatherService {
                 res = new String(buffers);
             }
             JsonMapper jsonMapper = new JsonMapper();
-            List<Weather> list = (List<Weather>)jsonMapper.convertValue(res, List.class);
-            System.out.println("========");
-            return true;
+            List<Weather> list = jsonMapper.convertValue(res, new TypeReference<List<Weather>>(){});
+            return weatherMapper.saveWeathers(list);
         } catch (Exception e) {
-            loger.info("恢复失败，信息：{}", e.getMessage());
+            logger.info("恢复失败，信息：{}", e.getMessage());
             return false;
         }
     }
@@ -85,7 +86,7 @@ public class WeatherServiceImpl implements WeatherService {
             final String weathersData = jsonMapper.writeValueAsString(weathers);
             return CommonUtils.writeFileToDisk( BACKUP_FILE_PATH + backupFileName, weathersData);
         } catch (IOException e) {
-            loger.info("备份失败，信息：{}", e.getMessage());
+            logger.info("备份失败，信息：{}", e.getMessage());
             return false;
         }
     }

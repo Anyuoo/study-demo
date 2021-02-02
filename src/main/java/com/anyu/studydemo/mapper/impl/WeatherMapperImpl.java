@@ -72,4 +72,8 @@ public class WeatherMapperImpl implements WeatherMapper {
         return highestWeather.orElse(Weather.getInstance());
     }
 
+    @Override
+    public boolean saveWeathers(List<Weather> weathers) {
+        return this.weathers.addAll(weathers);
+    }
 }
