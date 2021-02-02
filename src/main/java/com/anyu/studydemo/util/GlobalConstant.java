@@ -10,4 +10,6 @@ public interface GlobalConstant {
     String YESTERDAY = "昨天";
     String TODAY = "今天";
     String TOMORROM = "明天";
+
+    String BACKUP_FILE_PATH = "./src/main/resources/";
 }

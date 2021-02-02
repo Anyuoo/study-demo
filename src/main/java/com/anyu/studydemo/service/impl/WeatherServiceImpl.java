@@ -4,16 +4,17 @@ import com.anyu.studydemo.mapper.WeatherMapper;
 import com.anyu.studydemo.model.entity.Weather;
 import com.anyu.studydemo.service.WeatherService;
 import com.anyu.studydemo.util.CommonUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import io.micrometer.core.instrument.util.JsonUtils;
-import lombok.val;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ import java.util.List;
  */
 @Service("weatherService")
 public class WeatherServiceImpl implements WeatherService {
+    private final static Logger loger = LoggerFactory.getLogger(WeatherServiceImpl.class);
 
     @Resource
     private WeatherMapper weatherMapper;
@@ -45,12 +47,13 @@ public class WeatherServiceImpl implements WeatherService {
 
     /**
      * 备份恢复
-     * @param dataSourcePath 元备份地址
+     * @param backupFileName 备份文件名
      */
     @Override
-    public boolean recovery(String dataSourcePath) {
-        final InputStream stream = this.getClass().getClassLoader().getResourceAsStream(dataSourcePath);
+    public boolean recovery(String backupFileName) {
+        final InputStream stream = this.getClass().getClassLoader().getResourceAsStream(backupFileName);
         if (stream == null) {
+            loger.info("未发现备份资源");
             return false;
         }
         final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
@@ -65,23 +68,24 @@ public class WeatherServiceImpl implements WeatherService {
             System.out.println("========");
             return true;
         } catch (Exception e) {
+            loger.info("恢复失败，信息：{}", e.getMessage());
             return false;
         }
     }
 
     /**
      * 备份
-     * @param backupPath 备份地址
+     * @param backupFileName 备份文件名
      */
     @Override
-    public boolean backupWeathers(String backupPath) {
+    public boolean backupWeathers(String backupFileName) {
         List<Weather> weathers = weatherMapper.listWeathers();
         JsonMapper jsonMapper = new JsonMapper();
         try {
             final String weathersData = jsonMapper.writeValueAsString(weathers);
-            return CommonUtils.writeFileToDisk(backupPath, weathersData);
+            return CommonUtils.writeFileToDisk( BACKUP_FILE_PATH + backupFileName, weathersData);
         } catch (IOException e) {
-            e.printStackTrace();
+            loger.info("备份失败，信息：{}", e.getMessage());
             return false;
         }
     }

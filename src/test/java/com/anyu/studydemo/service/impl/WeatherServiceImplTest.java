@@ -15,7 +15,7 @@ class WeatherServiceImplTest  {
 
     @Test
     public void testBackupData() {
-        weatherService.backupWeathers("./a.txt");
+        weatherService.backupWeathers("a.txt");
     }
 
     @Test

@@ -42,11 +42,11 @@ public class CommonUtils {
 
     /**
      * 想磁盘写入文件
-     * @param filePath 文件路径
+     * @param fileName 文件
      * @param data 数据
      */
-    public static boolean writeFileToDisk(String filePath,String data) throws IOException {
-        File file = new File(filePath);
+    public static boolean writeFileToDisk(String fileName,String data) throws IOException {
+        File file = new File(fileName);
         if (!file.exists() &&  !file.createNewFile())
             return false;
 
@@ -56,8 +56,6 @@ public class CommonUtils {
             writer.write(data);
             writer.flush();
             return true;
-        } catch (Exception e) {
-            throw e;
         }
     }
 
