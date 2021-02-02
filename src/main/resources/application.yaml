@@ -1,0 +1,19 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /study
+#
+#spring:
+#  #数据源配置
+#  datasource:
+#    type: com.zaxxer.hikari.HikariDataSource
+#    driver-class-name: com.mysql.jdbc.Driver
+#    username: root
+#    password: 123456
+#    url: jdbc:mysql://172.17.0.1:3307/ancf?tinyInt1isBit=false&useSSL=false&serverTimezone=GMT%2B8
+#
+##mybatis-plus 配置
+#mybatis-plus:
+#  configuration:
+#    map-underscore-to-camel-case: true
+
