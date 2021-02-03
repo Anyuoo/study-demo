@@ -6,10 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-class WeatherServiceImplTest  {
+class WeatherServiceImplTest {
     @Resource
     private WeatherService weatherService;
 

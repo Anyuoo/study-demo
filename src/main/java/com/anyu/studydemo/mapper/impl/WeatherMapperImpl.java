@@ -6,7 +6,6 @@ import com.anyu.studydemo.util.CommonUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -34,20 +33,19 @@ public class WeatherMapperImpl implements WeatherMapper {
         dates.add("明天");
 
         for (String city : cities) {
-            dates.forEach(date ->{
+            dates.forEach(date -> {
                 //生成温度
                 final float highest = CommonUtils.getRandomTemperature(null);
                 final float lowest = CommonUtils.getRandomTemperature(highest);
                 //生成天气数据
                 Weather weather = Weather.getInstance()
                         .setCityName(city)
-                        .setDate(date)
+                        .setDateTime(CommonUtils.getRandomDateTime())
                         .setHigh(highest)
                         .setLow(lowest);
                 this.weathers.add(weather);
             });
         }
-
 
 
     }

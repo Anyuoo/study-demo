@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.lang.annotation.Annotation;
@@ -34,6 +33,7 @@ public class RestCommonResultAdvice implements ResponseBodyAdvice<Object> {
     /**
      * TODO 无法对String封装，报错 ExceptionHandler: class com.anyu.common.entity.CommonResult cannot be cast to class java.lang.String
      * 如果类或者方法上有{@link CommonResultType}
+     *
      * @return CommonResult {@link CommonResult}
      */
     @Override
@@ -42,7 +42,7 @@ public class RestCommonResultAdvice implements ResponseBodyAdvice<Object> {
         if (body instanceof CommonResult) {
             return body;
         }
-        return CommonResult.with(ResultType.SUCCESS,body);
+        return CommonResult.with(ResultType.SUCCESS, body);
     }
 
 }

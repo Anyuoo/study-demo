@@ -1,9 +1,11 @@
 package com.anyu.studydemo.model.entity;
 
 
+import java.time.LocalDateTime;
+
 public class Weather {
     private String cityName;
-    private String date;
+    private LocalDateTime dateTime;
     private Float low;
     private Float high;
 
@@ -21,12 +23,12 @@ public class Weather {
         return this;
     }
 
-    public String getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public Weather setDate(String date) {
-        this.date = date;
+    public Weather setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
         return this;
     }
 

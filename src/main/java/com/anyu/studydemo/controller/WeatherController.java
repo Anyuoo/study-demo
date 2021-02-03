@@ -3,6 +3,7 @@ package com.anyu.studydemo.controller;
 
 import com.anyu.studydemo.model.CommonResult;
 import com.anyu.studydemo.model.entity.Weather;
+import com.anyu.studydemo.model.entity.dto.WeatherDTO;
 import com.anyu.studydemo.model.enums.ResultType;
 import com.anyu.studydemo.service.WeatherService;
 import com.anyu.studydemo.util.CommonUtils;
@@ -19,7 +20,7 @@ public class WeatherController {
     private WeatherService weatherService;
 
     @GetMapping(name = "查询某个城市所有天气信息", path = "/city/{cityName}")
-    public CommonResult<List<Weather>> getWeathersByCityName(@PathVariable String cityName) {
+    public CommonResult<List<WeatherDTO>> getWeathersByCityName(@PathVariable String cityName) {
         if (CommonUtils.isBlank(cityName)) {
             return CommonResult.with(ResultType.FAILED, null);
         }
@@ -27,7 +28,7 @@ public class WeatherController {
     }
 
     @GetMapping(name = "查询所有天气", path = "/all")
-    public CommonResult<List<Weather>> listAllWeathers() {
+    public CommonResult<List<WeatherDTO>> listAllWeathers() {
         return CommonResult.with(ResultType.SUCCESS, weatherService.listWeathers());
     }
 

@@ -2,7 +2,8 @@ package com.anyu.studydemo.model.enums;
 
 public enum ResultType implements IResultType {
     SUCCESS(true, 2000, "操作成功"),
-    FAILED(false, 4000, "操作失败"),;
+    FAILED(false, 4000, "操作失败"),
+    ;
 
     private final Boolean success;
     private final int code;

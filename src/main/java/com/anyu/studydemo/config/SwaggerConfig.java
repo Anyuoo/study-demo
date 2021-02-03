@@ -15,7 +15,7 @@ import java.util.ArrayList;
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    public Docket docker(){
+    public Docket docker() {
         // 构造函数传入初始化规范，这是swagger2规范
         return new Docket(DocumentationType.SWAGGER_2)
                 //apiInfo： 添加api详情信息，参数为ApiInfo类型的参数，这个参数包含了第二部分的所有信息比如标题、描述、版本之类的，开发中一般都会自定义这些信息
@@ -32,7 +32,7 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private ApiInfo apiInfo(){
+    private ApiInfo apiInfo() {
         Contact contact = new Contact("名字：Anyu", "个人链接：https://github.com/Anyuoo", "邮箱：anyuzhao@qq.com");
         return new ApiInfo(
                 "标题内容", // 标题

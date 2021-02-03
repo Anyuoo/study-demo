@@ -1,15 +1,16 @@
 package com.anyu.studydemo.model;
 
 import com.anyu.studydemo.model.enums.IResultType;
-import com.anyu.studydemo.model.enums.ResultType;
 
 import java.io.Serializable;
+
 /**
-*统一结果封装
-* @author Anyu
-* @since 2021/2/2 下午3:19
-*/
-public class CommonResult <T> implements Serializable {
+ * 统一结果封装
+ *
+ * @author Anyu
+ * @since 2021/2/2 下午3:19
+ */
+public class CommonResult<T> implements Serializable {
     private boolean success;
     private int code;
     private String message;
@@ -31,12 +32,10 @@ public class CommonResult <T> implements Serializable {
     public static <T> CommonResult<T> with(IResultType resultType, T data) {
         return new CommonResult<>(resultType.getSuccess(), resultType.getCode(), resultType.getMessage(), data);
     }
+
     public static <T> CommonResult<T> with(IResultType resultType) {
         return new CommonResult<>(resultType.getSuccess(), resultType.getCode(), resultType.getMessage(), null);
     }
-
-
-
 
 
     public boolean getSuccess() {
@@ -52,7 +51,7 @@ public class CommonResult <T> implements Serializable {
         return code;
     }
 
-    public CommonResult<T>  setCode(Integer code) {
+    public CommonResult<T> setCode(Integer code) {
         this.code = code;
         return this;
     }
@@ -61,7 +60,7 @@ public class CommonResult <T> implements Serializable {
         return message;
     }
 
-    public CommonResult<T>  setMessage(String message) {
+    public CommonResult<T> setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -70,7 +69,7 @@ public class CommonResult <T> implements Serializable {
         return data;
     }
 
-    public CommonResult<T>  setData(T data) {
+    public CommonResult<T> setData(T data) {
         this.data = data;
         return this;
     }

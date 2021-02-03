@@ -21,6 +21,7 @@ public interface WeatherMapper extends GlobalConstant {
 
     /**
      * 根据城市名查询天气
+     *
      * @param cityName 需要查询的城市
      * @return 该城市的天气数据
      */
@@ -29,10 +30,11 @@ public interface WeatherMapper extends GlobalConstant {
 
     /**
      * 获取某个城市最高温度信息
+     *
      * @param cityName 需要查询的城市
      * @return 该城市的天气数据
      */
-   Weather getHighestWeatherOfCity(String cityName);
+    Weather getHighestWeatherOfCity(String cityName);
 
 
     boolean saveWeathers(List<Weather> weathers);
