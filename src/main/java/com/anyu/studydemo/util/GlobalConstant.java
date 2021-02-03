@@ -8,10 +8,6 @@ package com.anyu.studydemo.util;
  */
 public interface GlobalConstant {
 
-    String YESTERDAY = "昨天";
-    String TODAY = "今天";
-    String TOMORROM = "明天";
-
     //备份相关
     String BACKUP_FILE_PATH = "./src/main/resources/";
     String DEFAULT_BACKUP_FILENAME = "weathers_backup_data";

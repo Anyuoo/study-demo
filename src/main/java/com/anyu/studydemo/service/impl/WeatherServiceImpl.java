@@ -1,5 +1,6 @@
 package com.anyu.studydemo.service.impl;
 
+import com.anyu.studydemo.config.backup.BackupProperties;
 import com.anyu.studydemo.mapper.WeatherMapper;
 import com.anyu.studydemo.model.entity.Weather;
 import com.anyu.studydemo.model.entity.dto.WeatherDTO;
@@ -35,6 +36,8 @@ public class WeatherServiceImpl implements WeatherService {
 
     @Resource
     private WeatherMapper weatherMapper;
+    @Resource
+    private BackupProperties backupProperties;
 
     @Override
     public List<WeatherDTO> listWeathersByCityName(@NotBlank String cityName) {
@@ -73,9 +76,9 @@ public class WeatherServiceImpl implements WeatherService {
     public boolean recovery(String backupFileName) {
         //如果文件名为空，使用默认
         if (CommonUtils.isBlank(backupFileName)) {
-            backupFileName = DEFAULT_BACKUP_FILENAME;
+            backupFileName = backupProperties.getFileName();
         }
-        String backFilePath = backupFileName + "." + BACKUP_FILE_TYPE;
+        String backFilePath = backupProperties.getFullPath(backupFileName);
         ClassPathResource resource = new ClassPathResource(backFilePath);
         if (!resource.exists()) {
             return false;
@@ -119,13 +122,10 @@ public class WeatherServiceImpl implements WeatherService {
         try {
             final String weathersData = jsonMapper.writeValueAsString(weathers);
             if (CommonUtils.isBlank(backupFileName)) {
-                backupFileName = DEFAULT_BACKUP_FILENAME;
+                backupFileName = backupProperties.getFileName();
             }
-            final String backFIlePath = BACKUP_FILE_PATH +
-                    backupFileName +
-                    "." +
-                    BACKUP_FILE_TYPE;
-            return CommonUtils.writeFileToDisk(backFIlePath, weathersData);
+            final String backFilePath = backupProperties.getFullPath(backupFileName);
+            return CommonUtils.writeFileToDisk(backFilePath, weathersData);
         } catch (IOException e) {
             logger.info("备份失败，信息：{}", e.getMessage());
             return false;
