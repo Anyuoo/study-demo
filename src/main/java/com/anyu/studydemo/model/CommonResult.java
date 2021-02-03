@@ -31,6 +31,10 @@ public class CommonResult <T> implements Serializable {
     public static <T> CommonResult<T> with(IResultType resultType, T data) {
         return new CommonResult<>(resultType.getSuccess(), resultType.getCode(), resultType.getMessage(), data);
     }
+    public static <T> CommonResult<T> with(IResultType resultType) {
+        return new CommonResult<>(resultType.getSuccess(), resultType.getCode(), resultType.getMessage(), null);
+    }
+
 
 
 

@@ -15,5 +15,5 @@ public interface WeatherService extends GlobalConstant {
 
     boolean recovery(String backupFileName);
 
-    boolean backupWeathers(String backupFileName);
+    boolean backup(String backupFileName);
 }

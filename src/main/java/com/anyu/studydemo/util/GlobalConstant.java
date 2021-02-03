@@ -11,5 +11,8 @@ public interface GlobalConstant {
     String TODAY = "今天";
     String TOMORROM = "明天";
 
+    //备份相关
     String BACKUP_FILE_PATH = "./src/main/resources/";
+    String DEFAULT_BACKUP_FILENAME = "weathers_backup_data";
+    String BACKUP_FILE_TYPE = "txt";
 }
