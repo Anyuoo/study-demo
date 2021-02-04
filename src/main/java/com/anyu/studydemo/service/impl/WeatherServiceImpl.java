@@ -41,13 +41,15 @@ public class WeatherServiceImpl implements WeatherService {
 
     @Override
     public List<WeatherDTO> listWeathersByCityName(@NotBlank String cityName) {
-        return weatherMapper.listWeathers()
+        return weatherMapper.listWeathersByCityName(cityName)
                 .stream()
                 .map(weather -> WeatherDTO.getInstance()
                         .setCityName(weather.getCityName())
+                        .setDateTime(CommonUtils.getDateTimeString(weather.getDateTime()))
                         .setDateDesc(CommonUtils.getDateDespByNow(weather.getDateTime()))
                         .setHigh(weather.getHigh())
-                        .setHigh(weather.getLow())).collect(Collectors.toUnmodifiableList());
+                        .setHigh(weather.getLow()))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
@@ -59,7 +61,8 @@ public class WeatherServiceImpl implements WeatherService {
                         .setDateTime(CommonUtils.getDateTimeString(weather.getDateTime()))
                         .setDateDesc(CommonUtils.getDateDespByNow(weather.getDateTime()))
                         .setHigh(weather.getHigh())
-                        .setLow(weather.getLow())).collect(Collectors.toUnmodifiableList());
+                        .setLow(weather.getLow()))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override

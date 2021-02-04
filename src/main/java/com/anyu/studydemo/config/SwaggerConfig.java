@@ -35,8 +35,8 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         Contact contact = new Contact("名字：Anyu", "个人链接：https://github.com/Anyuoo", "邮箱：anyuzhao@qq.com");
         return new ApiInfo(
-                "标题内容", // 标题
-                "描述内容", // 描述
+                "学习项目", // 标题
+                "springboot学习项目", // 描述
                 "版本内容：v1.0", // 版本
                 "链接：http://terms.service.url/", // 组织链接
                 contact, // 联系人信息
