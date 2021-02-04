@@ -22,6 +22,8 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+    #不序列化null值
+    default-property-inclusion: non_null
 
 #用户自定义配置
 app:

@@ -43,10 +43,10 @@ public class RestCommonResultAdvice implements ResponseBodyAdvice<Object> {
         if (body instanceof CommonResult) {
             return body;
         }
+        //body 为null 一般为错误结果
         if (body == null) {
             return CommonResult.with(ResultType.FAILED);
         }
         return CommonResult.with(ResultType.SUCCESS, body);
     }
-
 }
