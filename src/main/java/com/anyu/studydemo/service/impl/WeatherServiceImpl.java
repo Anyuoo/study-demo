@@ -8,7 +8,6 @@ import com.anyu.studydemo.model.entity.dto.WeatherDTO;
 import com.anyu.studydemo.model.enums.ResultType;
 import com.anyu.studydemo.service.WeatherService;
 import com.anyu.studydemo.util.CommonUtils;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.slf4j.Logger;

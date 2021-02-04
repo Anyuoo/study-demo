@@ -31,7 +31,7 @@ public class WeatherController {
 
     @GetMapping(name = "查询所有天气", path = "/all")
     public List<WeatherDTO> listAllWeathers() {
-        return  weatherService.listWeathers();
+        return weatherService.listWeathers();
     }
 
     @GetMapping(name = "查询某个城市最高天气", path = "/highest/{cityName}")

@@ -26,6 +26,7 @@ public class GlobalException extends RuntimeException {
 
     /**
      * api 异常处理结果
+     *
      * @param resultType 结果类型
      * @param httpStatus 请求状态
      */
@@ -35,6 +36,7 @@ public class GlobalException extends RuntimeException {
 
     /**
      * 业务层处理结果
+     *
      * @param resultType 结果类型
      */
     public static GlobalException causeBy(IResultType resultType) {

@@ -3,10 +3,11 @@ package com.anyu.studydemo.config.backup;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
-*文件备份信息所需属性
-* @author Anyu
-* @since 2021/2/3 下午4:00
-*/
+ * 文件备份信息所需属性
+ *
+ * @author Anyu
+ * @since 2021/2/3 下午4:00
+ */
 @ConfigurationProperties(prefix = "app.backup")
 //@Component
 public class BackupProperties {
@@ -14,13 +15,14 @@ public class BackupProperties {
     private String fileName = "weathers_backup_data";
     private String fileSuffix = "txt";
 
-    public  String getDefaultFullPath() {
+    public String getDefaultFullPath() {
         return path + fileName + "." + fileSuffix;
     }
 
-    public  String getFullPath(String fileName) {
+    public String getFullPath(String fileName) {
         return path + fileName + "." + fileSuffix;
     }
+
     public String getPath() {
         return path;
     }

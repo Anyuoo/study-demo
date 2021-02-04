@@ -25,7 +25,7 @@ public class CommonUtilsTest {
             LocalDateTime a = CommonUtils.getRandomDateTime();
             String date = a.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             String desp = CommonUtils.getDateDespByNow(a);
-            System.out.println("time: " + date+  "===desption: "+desp);
+            System.out.println("time: " + date + "===desption: " + desp);
         }
 
 

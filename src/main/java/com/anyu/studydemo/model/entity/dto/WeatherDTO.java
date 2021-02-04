@@ -1,13 +1,11 @@
 package com.anyu.studydemo.model.entity.dto;
 
-import java.time.LocalDateTime;
-
 /**
-*
  * 用于传输对象信息
-* @author Anyu
-* @since 2021/2/3 下午3:14
-*/
+ *
+ * @author Anyu
+ * @since 2021/2/3 下午3:14
+ */
 public class WeatherDTO {
     private String cityName;
     private String dateTime;
@@ -19,8 +17,14 @@ public class WeatherDTO {
     public static WeatherDTO getInstance() {
         return new WeatherDTO();
     }
+
     public String getCityName() {
         return cityName;
+    }
+
+    public WeatherDTO setCityName(String cityName) {
+        this.cityName = cityName;
+        return this;
     }
 
     public String getDateTime() {
@@ -29,11 +33,6 @@ public class WeatherDTO {
 
     public WeatherDTO setDateTime(String dateTime) {
         this.dateTime = dateTime;
-        return this;
-    }
-
-    public WeatherDTO setCityName(String cityName) {
-        this.cityName = cityName;
         return this;
     }
 

@@ -15,10 +15,11 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.WebUtils;
 
 /**
-*统一异常处理
-* @author Anyu
-* @since 2021/2/4 上午11:03
-*/
+ * 统一异常处理
+ *
+ * @author Anyu
+ * @since 2021/2/4 上午11:03
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
