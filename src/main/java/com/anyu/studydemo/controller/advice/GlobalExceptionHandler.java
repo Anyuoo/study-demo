@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<CommonResult<?>> exceptionHandler(Exception ex, WebRequest request) {
         logger.error("ExceptionHandler: {}", ex.getMessage());
-        HttpHeaders headers = new HttpHeaders();
+        var headers = new HttpHeaders();
         if (ex instanceof GlobalException) {
             return handleGlobalException((GlobalException) ex, headers, request);
         }
@@ -45,8 +45,8 @@ public class GlobalExceptionHandler {
      * 对GlobalException类返回返回结果的处理
      */
     protected ResponseEntity<CommonResult<?>> handleGlobalException(GlobalException ex, HttpHeaders headers, WebRequest request) {
-        final CommonResult<?> body = CommonResult.with(ex.getResultType());
-        final HttpStatus httpStatus = ex.getHttpStatus();
+        var body = CommonResult.with(ex.getResultType());
+        var httpStatus = ex.getHttpStatus();
         return handleExceptionInternal(ex, body, headers, httpStatus, request);
     }
 
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
      * 异常类的统一处理
      */
     protected ResponseEntity<CommonResult<?>> handleException(Exception ex, HttpHeaders headers, WebRequest request) {
-        CommonResult<?> body = CommonResult.with(ResultType.FAILED);
+        var body = CommonResult.with(ResultType.FAILED);
         return this.handleExceptionInternal(ex, body, headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 

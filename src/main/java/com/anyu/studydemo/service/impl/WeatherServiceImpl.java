@@ -1,9 +1,11 @@
 package com.anyu.studydemo.service.impl;
 
 import com.anyu.studydemo.config.backup.BackupProperties;
+import com.anyu.studydemo.exception.GlobalException;
 import com.anyu.studydemo.mapper.WeatherMapper;
 import com.anyu.studydemo.model.entity.Weather;
 import com.anyu.studydemo.model.entity.dto.WeatherDTO;
+import com.anyu.studydemo.model.enums.ResultType;
 import com.anyu.studydemo.service.WeatherService;
 import com.anyu.studydemo.util.CommonUtils;
 import com.fasterxml.jackson.databind.JavaType;
@@ -81,9 +83,10 @@ public class WeatherServiceImpl implements WeatherService {
         if (CommonUtils.isBlank(backupFileName)) {
             backupFileName = backupProperties.getFileName();
         }
-        String backFilePath = backupProperties.getFullPath(backupFileName);
-        ClassPathResource resource = new ClassPathResource(backFilePath);
+        var backFilePath = backupProperties.getFullPath(backupFileName);
+        var resource = new ClassPathResource(backFilePath);
         if (!resource.exists()) {
+            logger.info("未发现备份资源");
             return false;
         }
         InputStream stream;
@@ -91,25 +94,25 @@ public class WeatherServiceImpl implements WeatherService {
             stream = resource.getInputStream();
         } catch (IOException e) {
             logger.info("未发现备份资源");
-            return false;
+            throw GlobalException.causeBy(ResultType.FAILED);
         }
         final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         try (stream; reader) {
-            char[] buffers = new char[1024];
+            var buffers = new char[1024];
             String res = "";
             while (reader.read(buffers) != -1) {
                 res = new String(buffers);
             }
             if (CommonUtils.isBlank(res)) return false;
-            ObjectMapper objectMapper = new ObjectMapper();
-            JavaType type = objectMapper.getTypeFactory()
+            var objectMapper = new ObjectMapper();
+            var type = objectMapper.getTypeFactory()
                     .constructParametricType(List.class, Weather.class);
-            ArrayList<Weather> weathers = objectMapper.readValue(res, type);
+            final ArrayList<Weather> weathers = objectMapper.readValue(res, type);
             return weatherMapper.saveWeathers(weathers);
 
         } catch (Exception e) {
             logger.info("恢复失败，信息：{}", e.getMessage());
-            return false;
+            throw GlobalException.causeBy(ResultType.FAILED);
         }
     }
 
@@ -120,18 +123,18 @@ public class WeatherServiceImpl implements WeatherService {
      */
     @Override
     public boolean backup(String backupFileName) {
-        List<Weather> weathers = weatherMapper.listWeathers();
-        JsonMapper jsonMapper = new JsonMapper();
+        var weathers = weatherMapper.listWeathers();
+        var jsonMapper = new JsonMapper();
         try {
-            final String weathersData = jsonMapper.writeValueAsString(weathers);
+            var weathersData = jsonMapper.writeValueAsString(weathers);
             if (CommonUtils.isBlank(backupFileName)) {
                 backupFileName = backupProperties.getFileName();
             }
-            final String backFilePath = backupProperties.getFullPath(backupFileName);
+            var backFilePath = backupProperties.getFullPath(backupFileName);
             return CommonUtils.writeFileToDisk(backFilePath, weathersData);
         } catch (IOException e) {
             logger.info("备份失败，信息：{}", e.getMessage());
-            return false;
+            throw GlobalException.causeBy(ResultType.FAILED);
         }
     }
 }
