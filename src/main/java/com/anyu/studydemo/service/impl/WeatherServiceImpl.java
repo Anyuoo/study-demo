@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,17 +41,14 @@ public class WeatherServiceImpl implements WeatherService {
     private WeatherMapper weatherMapper;
     @Resource
     private BackupProperties backupProperties;
+    @Resource
+    private ObjectMapper objectMapper;
 
     @Override
     public List<WeatherDTO> listWeathersByCityName(@NotBlank String cityName) {
         return weatherMapper.listWeathersByCityName(cityName)
                 .stream()
-                .map(weather -> WeatherDTO.getInstance()
-                        .setCityName(weather.getCityName())
-                        .setDateTime(CommonUtils.getDateTimeString(weather.getDateTime()))
-                        .setDateDesc(CommonUtils.getDateDespByNow(weather.getDateTime()))
-                        .setHigh(weather.getHigh())
-                        .setHigh(weather.getLow()))
+                .map(this::ConvertWeatherDtoToDo)
                 .collect(Collectors.toUnmodifiableList());
     }
 
@@ -57,12 +56,7 @@ public class WeatherServiceImpl implements WeatherService {
     public List<WeatherDTO> listWeathers() {
         return weatherMapper.listWeathers()
                 .stream()
-                .map(weather -> WeatherDTO.getInstance()
-                        .setCityName(weather.getCityName())
-                        .setDateTime(CommonUtils.getDateTimeString(weather.getDateTime()))
-                        .setDateDesc(CommonUtils.getDateDespByNow(weather.getDateTime()))
-                        .setHigh(weather.getHigh())
-                        .setLow(weather.getLow()))
+                .map(this::ConvertWeatherDtoToDo)
                 .collect(Collectors.toUnmodifiableList());
     }
 
@@ -77,38 +71,38 @@ public class WeatherServiceImpl implements WeatherService {
      * @param backupFileName 备份文件名
      */
     @Override
-    public boolean recovery(String backupFileName) {
+    public int recovery(String backupFileName) {
         //如果文件名为空，使用默认
         if (CommonUtils.isBlank(backupFileName)) {
             backupFileName = backupProperties.getFileName();
         }
-        var backFilePath = backupProperties.getFullPath(backupFileName);
-        var resource = new ClassPathResource(backFilePath);
+        var resource = new ClassPathResource(backupProperties.getFullFileName(backupFileName));
         if (!resource.exists()) {
             logger.info("未发现备份资源");
-            return false;
+            return 0;
         }
         InputStream stream;
         try {
             stream = resource.getInputStream();
         } catch (IOException e) {
-            logger.info("未发现备份资源");
+            logger.info("读取备份资源失败");
             throw GlobalException.causeBy(ResultType.FAILED);
         }
         final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         try (stream; reader) {
-            var buffers = new char[1024];
-            String res = "";
-            while (reader.read(buffers) != -1) {
-                res = new String(buffers);
-            }
-            if (CommonUtils.isBlank(res)) return false;
-            var objectMapper = new ObjectMapper();
             var type = objectMapper.getTypeFactory()
                     .constructParametricType(List.class, Weather.class);
-            final ArrayList<Weather> weathers = objectMapper.readValue(res, type);
-            return weatherMapper.saveWeathers(weathers);
-
+            String line;
+            ArrayList<Weather> weathers;
+            int num = 0;
+            while ((line = reader.readLine()) != null) {
+                if (CommonUtils.isBlank(line)) continue;
+                 weathers  = objectMapper.readValue(line, type);
+                if (weatherMapper.saveWeathers(weathers)){
+                   num += weathers.size();
+                }
+            }
+            return num;
         } catch (Exception e) {
             logger.info("恢复失败，信息：{}", e.getMessage());
             throw GlobalException.causeBy(ResultType.FAILED);
@@ -121,19 +115,31 @@ public class WeatherServiceImpl implements WeatherService {
      * @param backupFileName 备份文件名
      */
     @Override
-    public boolean backup(String backupFileName) {
+    public int backup(String backupFileName, boolean append) {
         var weathers = weatherMapper.listWeathers();
-        var jsonMapper = new JsonMapper();
         try {
-            var weathersData = jsonMapper.writeValueAsString(weathers);
+            var weathersData = objectMapper.writeValueAsString(weathers);
             if (CommonUtils.isBlank(backupFileName)) {
                 backupFileName = backupProperties.getFileName();
             }
             var backFilePath = backupProperties.getFullPath(backupFileName);
-            return CommonUtils.writeFileToDisk(backFilePath, weathersData);
+            if (CommonUtils.writeFileToDisk(backFilePath, append, weathersData)) {
+                return weathers.size();
+            }
+            return -1;
         } catch (IOException e) {
             logger.info("备份失败，信息：{}", e.getMessage());
             throw GlobalException.causeBy(ResultType.FAILED);
         }
+    }
+
+
+    private WeatherDTO ConvertWeatherDtoToDo(Weather weather) {
+        var weatherDTO = WeatherDTO.getInstance();
+        //BeanUtils 复制相同类型，相同成员名的属性值
+        BeanUtils.copyProperties(weather, weatherDTO);
+        weatherDTO.setDateTime(CommonUtils.getDateTimeString(weather.getDateTime()))
+                .setDateDesc(CommonUtils.getDateDespByNow(weather.getDateTime()));
+        return weatherDTO;
     }
 }

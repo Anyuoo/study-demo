@@ -7,6 +7,7 @@ package com.anyu.studydemo.model.entity.dto;
  * @since 2021/2/3 下午3:14
  */
 public class WeatherDTO {
+    private String id;
     private String cityName;
     private String dateTime;
     private String dateDesc;
@@ -16,6 +17,15 @@ public class WeatherDTO {
 
     public static WeatherDTO getInstance() {
         return new WeatherDTO();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public WeatherDTO setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getCityName() {

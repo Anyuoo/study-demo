@@ -13,7 +13,7 @@ class WeatherServiceImplTest {
 
     @Test
     public void testBackupData() {
-        weatherService.backup("a.txt");
+        weatherService.backup("a.txt",false);
     }
 
     @Test

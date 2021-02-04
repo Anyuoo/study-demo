@@ -1,9 +1,19 @@
 package com.anyu.studydemo.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
+/**
+ * 数据库实体对象
+ *
+ * @author Anyu
+ * @since 2021/2/4 上午11:28
+ */
 public class Weather {
+    private String id;
     private String cityName;
     private LocalDateTime dateTime;
     private Float low;
@@ -12,6 +22,15 @@ public class Weather {
 
     public static Weather getInstance() {
         return new Weather();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Weather setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getCityName() {

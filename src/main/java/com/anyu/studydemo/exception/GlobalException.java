@@ -12,13 +12,11 @@ import org.springframework.http.HttpStatus;
 public class GlobalException extends RuntimeException {
 
     private final int code;
-    private final String message;
     private final HttpStatus httpStatus;
     private final IResultType resultType;
 
     private GlobalException(IResultType resultType, HttpStatus httpStatus) {
         super(resultType.getMessage());
-        this.message = resultType.getMessage();
         this.code = resultType.getCode();
         this.httpStatus = httpStatus;
         this.resultType = resultType;
@@ -47,11 +45,6 @@ public class GlobalException extends RuntimeException {
         return code;
     }
 
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
 
     public HttpStatus getHttpStatus() {
         return httpStatus;

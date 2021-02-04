@@ -39,6 +39,7 @@ public class WeatherMapperImpl implements WeatherMapper {
                 final float lowest = CommonUtils.getRandomTemperature(highest);
                 //生成天气数据
                 Weather weather = Weather.getInstance()
+                        .setId(CommonUtils.generateUUID(WEATHER_ID_SIZE))
                         .setCityName(city)
                         .setDateTime(CommonUtils.getRandomDateTime())
                         .setHigh(highest)

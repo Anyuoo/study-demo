@@ -43,19 +43,13 @@ public class WeatherController {
     }
 
     @PostMapping(name = "天气数据备份", path = "/backup")
-    public CommonResult<Void> backupWeatherData(String backupPath) {
-        if (weatherService.backup(backupPath)) {
-            return CommonResult.with(ResultType.SUCCESS);
-        }
-        return CommonResult.with(ResultType.FAILED);
+    public Integer backupWeatherData(String backupPath,boolean append) {
+        return weatherService.backup(backupPath, append);
     }
 
 
     @PostMapping(name = "天气数据备份恢复", path = "/recover")
-    public CommonResult<Void> recoverWeatherData(String recoverFilePath) {
-        if (weatherService.recovery(recoverFilePath)) {
-            return CommonResult.with(ResultType.SUCCESS);
-        }
-        return CommonResult.with(ResultType.FAILED);
+    public Integer recoverWeatherData(String recoverFilePath) {
+        return weatherService.recovery(recoverFilePath);
     }
 }

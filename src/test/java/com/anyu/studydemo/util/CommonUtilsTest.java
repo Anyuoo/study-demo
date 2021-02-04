@@ -27,8 +27,15 @@ public class CommonUtilsTest {
             String desp = CommonUtils.getDateDespByNow(a);
             System.out.println("time: " + date + "===desption: " + desp);
         }
-
-
     }
 
+    @Test
+    public void testUUID() {
+        for (int i = 0; i < 100; i++) {
+            String s = CommonUtils.generateUUID(20);
+            System.out.println(s);
+
+        }
+
+    }
 }

@@ -48,6 +48,9 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<CommonResult<?>> handleGlobalException(GlobalException ex, HttpHeaders headers, WebRequest request) {
         var body = CommonResult.with(ex.getResultType());
         var httpStatus = ex.getHttpStatus();
+        if (httpStatus == null) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
         return handleExceptionInternal(ex, body, headers, httpStatus, request);
     }
 

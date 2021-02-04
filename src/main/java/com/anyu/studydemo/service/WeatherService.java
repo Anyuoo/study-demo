@@ -14,7 +14,7 @@ public interface WeatherService extends GlobalConstant {
 
     Weather getHighestWeatherOfCity(String cityName);
 
-    boolean recovery(String backupFileName);
+    int recovery(String backupFileName);
 
-    boolean backup(String backupFileName);
+    int backup(String backupFileName, boolean append);
 }

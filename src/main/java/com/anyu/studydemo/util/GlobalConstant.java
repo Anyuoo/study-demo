@@ -8,8 +8,6 @@ package com.anyu.studydemo.util;
  */
 public interface GlobalConstant {
 
-    //备份相关
-    String BACKUP_FILE_PATH = "./src/main/resources/";
-    String DEFAULT_BACKUP_FILENAME = "weathers_backup_data";
-    String BACKUP_FILE_TYPE = "txt";
+    //id 长度
+    int WEATHER_ID_SIZE = 10;
 }

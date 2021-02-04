@@ -23,6 +23,12 @@ public class BackupProperties {
         return path + fileName + "." + fileSuffix;
     }
 
+    public  String getFullFileName(String fileName) {
+        return fileName + "." + fileSuffix;
+    }
+    public  String getDefaultFullFileName() {
+        return fileName + "." + fileSuffix;
+    }
     public String getPath() {
         return path;
     }

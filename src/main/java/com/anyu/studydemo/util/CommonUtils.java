@@ -1,9 +1,12 @@
 package com.anyu.studydemo.util;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * 公共工具类
@@ -19,14 +22,14 @@ public class CommonUtils {
      * @param highest 最高温度，如果为null 生成最高温度
      */
     public static float getRandomTemperature(Float highest) {
-        final Random random = new Random();
-        int integer = random.nextInt(50);
-        int decimal = random.nextInt(9);
-        float temperature = Float.parseFloat(integer + "." + decimal);
+        final var random = new Random();
+        final var integer = random.nextInt(50);
+        final var decimal = random.nextInt(9);
+        final var temperature = Float.parseFloat(integer + "." + decimal);
         if (highest == null) {
             return temperature;
         }
-        final String lowest = String.format("%.2f", highest - Float.parseFloat(integer + "." + decimal));
+        final var lowest = String.format("%.2f", highest - Float.parseFloat(integer + "." + decimal));
         return Float.parseFloat(lowest);
     }
 
@@ -48,16 +51,18 @@ public class CommonUtils {
      * 想磁盘写入文件
      *
      * @param fileName 文件
+     * @param append 是否追加
      * @param data     数据
      */
-    public static boolean writeFileToDisk(String fileName, String data) throws IOException {
-        File file = new File(fileName);
+    public static boolean writeFileToDisk(String fileName,boolean append, String data) throws IOException {
+        final var file = new File(fileName);
         if (!file.exists() && !file.createNewFile())
             return false;
-        FileOutputStream stream = new FileOutputStream(file);
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
+        final var stream = new FileOutputStream(file,append);
+        final var writer = new BufferedWriter(new OutputStreamWriter(stream));
         try (stream; writer) {
             writer.write(data);
+            writer.newLine();
             writer.flush();
             return true;
         }
@@ -67,8 +72,8 @@ public class CommonUtils {
      * 生成时间 昨天，今天，明天
      */
     public static LocalDateTime getRandomDateTime() {
-        final LocalDateTime now = LocalDateTime.now();
-        final Random random = new Random();
+        final var now = LocalDateTime.now();
+        final var random = new Random();
         final int hours = random.nextInt(48);
         return now.minusDays(1).plusHours(hours);
     }
@@ -78,8 +83,8 @@ public class CommonUtils {
      * 通过日期的到昨天今天明天描述
      */
     public static String getDateDespByNow(LocalDateTime time) {
-        final LocalDateTime now = LocalDateTime.now();
-        final LocalDateTime today = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0, 0);
+        final var now = LocalDateTime.now();
+        final var today = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0, 0);
         time = LocalDateTime.of(time.getYear(), time.getMonth(), time.getDayOfMonth(), 0, 0, 0, 0);
         switch (time.compareTo(today)) {
             case -1:
@@ -89,7 +94,7 @@ public class CommonUtils {
             case 1:
                 return "明天";
             default:
-                return "未知";
+                return null;
         }
     }
 
@@ -98,5 +103,13 @@ public class CommonUtils {
      */
     public static String getDateTimeString(LocalDateTime dateTime) {
         return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+
+    /**
+     * 生成uuid
+     */
+    public static String generateUUID(int size) {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, size);
     }
 }
