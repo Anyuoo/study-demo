@@ -16,6 +16,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.lang.annotation.Annotation;
 
+/**
+* 统一结果封装，配合{@link CommonResultType} 使用
+* @author Anyu
+* @since 2021/2/4 上午10:43
+*/
 @RestControllerAdvice
 public class RestCommonResultAdvice implements ResponseBodyAdvice<Object> {
     private static final Logger logger = LoggerFactory.getLogger(RestCommonResultAdvice.class);
